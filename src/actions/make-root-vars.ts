@@ -12,7 +12,7 @@ export const makeRootVars = async ({ data }: { data: { chain: Chain }[] }) => {
   const chainNameToId: Record<string, string> = {};
 
   const loadVars = ({ chain }: (typeof data)[number]) => {
-    const isTestnet = chain.network_type === "mainnet";
+    const isTestnet = chain.network_type === "testnet";
     (isTestnet ? testnetChainIds : mainnetChainIds).push(chain.chain_id);
     (isTestnet ? testnetChainNames : mainnetChainNames).push(chain.chain_name);
     chainIdToName[chain.chain_id] = chain.chain_name;
