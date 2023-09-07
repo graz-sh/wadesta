@@ -1,0 +1,55 @@
+{
+  "name": "wadesta",
+  "description": "Offline-first Cosmos chain registry JavaScript/TypeScript client generator 🪭",
+  "version": "0.0.1",
+  "author": "Griko Nibras <griko@graz.sh>",
+  "repository": "https://github.com/graz-sh/wadesta.git",
+  "homepage": "https://github.com/graz-sh/wadesta",
+  "bugs": "https://github.com/graz-sh/wadesta/issues",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*",
+    "stubs/*"
+  ],
+  "bin": "dist/bin.js",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "cli": "node dist/bin.js",
+    "dev": "tsup --watch",
+    "lint": "eslint --fix \"src/**/*.{ts,tsx}\"",
+    "prepublishOnly": "pnpm build && node scripts/clean-readme.js",
+    "postpublish": "git reset HEAD --hard"
+  },
+  "peerDependencies": {
+    "long": "*"
+  },
+  "peerDependenciesMeta": {
+    "long": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@graz-sh/types": "^0.0.4",
+    "degit": "npm:tiged@^2.12.5"
+  },
+  "devDependencies": {
+    "@clack/prompts": "^0.7.0",
+    "@graz-sh/style-guide-core": "^4.0.1",
+    "@types/degit": "^2.8.3",
+    "@types/node": "^18.17.14",
+    "cac": "^6.7.14",
+    "eslint": "^8.48.0",
+    "globby": "^13.2.2",
+    "p-map": "^6.0.0",
+    "prettier": "^3.0.3",
+    "tsup": "^7.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [],
+  "prettier": "@graz-sh/style-guide-core/prettier",
+  "license": "MIT"
+}
