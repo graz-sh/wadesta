@@ -2,15 +2,15 @@
 
 # wadesta
 
-[![npm/v](https://badgen.net/npm/v/wadesta)](https://www.npmjs.com/package/wadesta)
-[![npm/dt](https://badgen.net/npm/dt/wadesta)](https://www.npmjs.com/package/wadesta)
-[![stars](https://badgen.net/github/stars/graz-sh/wadesta)](https://github.com/graz-sh/wadesta)
+[![npm/v](https://badgen.net/npm/v/wadesta?)](https://www.npmjs.com/package/wadesta)
+[![npm/dt](https://badgen.net/npm/dt/wadesta?)](https://www.npmjs.com/package/wadesta)
+[![stars](https://badgen.net/github/stars/graz-sh/wadesta?)](https://github.com/graz-sh/wadesta)
 
 Offline-first Cosmos chain registry JavaScript/TypeScript client generator 🪭
 
 <!-- NPM_CLEAN_BELOW -->
 
-<video src="https://assets.graz.sh/wadesta.mp4" autoplay loop muted></video>
+![](https://assets.graz.sh/wadesta.gif)
 
 - [How it works](#how-it-works)
 - [Installing](#installing)
