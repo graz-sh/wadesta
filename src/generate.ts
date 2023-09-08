@@ -1,4 +1,3 @@
-import type EventEmitter from "events";
 import pMap from "p-map";
 
 import { cloneRegistry } from "./actions/clone-registry";
@@ -9,19 +8,10 @@ import { validateChainsPaths } from "./actions/validate-chains-paths";
 import { writeChainSources } from "./actions/write-chain-sources";
 import { writeRootSources } from "./actions/write-root-sources";
 import * as constants from "./constants";
-import { GenerateEvent } from "./constants/events";
+import type { GenerateEventEmitter } from "./events";
+import type { GenerateOptions } from "./types";
 
-export interface GenerateArgs {
-  clean?: boolean;
-  registry?: (string & {}) | "local";
-  registrySrc?: string;
-  outDir?: string;
-  // ext?: FileExt;
-  // type?: ModuleType;
-  merged?: boolean;
-}
-
-export const generate = async (args: GenerateArgs = {}, emitter?: EventEmitter) => {
+export const generate = async (args: GenerateOptions = {}, emitter?: GenerateEventEmitter) => {
   args.registry ??= constants.DEFAULT_REGISTRY_SRC;
 
   const registryPromise =
@@ -32,9 +22,9 @@ export const generate = async (args: GenerateArgs = {}, emitter?: EventEmitter) 
           outDir: makeTmpdir(constants.DEFAULT_REGISTRY_TMP_PREFIX),
         });
 
-  emitter?.emit(GenerateEvent.CloneRegistry);
+  emitter?.emit("cloneRegistry");
   const registryPath = await registryPromise;
-  emitter?.emit(GenerateEvent.CloneRegistryEnd);
+  emitter?.emit("cloneRegistryEnd");
 
   process.once("exit", () => {
     void graceFsRemove(registryPath);
@@ -45,12 +35,12 @@ export const generate = async (args: GenerateArgs = {}, emitter?: EventEmitter) 
 
   const outDir = args.outDir || constants.DEFAULT_OUT_DIR;
   if (args.clean) {
-    emitter?.emit(GenerateEvent.Clean);
+    emitter?.emit("clean");
     await graceFsRemove(outDir);
-    emitter?.emit(GenerateEvent.CleanEnd);
+    emitter?.emit("cleanEnd");
   }
 
-  emitter?.emit(GenerateEvent.WriteChains);
+  emitter?.emit("writeChains");
   const chainData = await pMap(validChainPaths, async (chainPath) => {
     const result = await writeChainSources({
       registryPath,
@@ -61,13 +51,13 @@ export const generate = async (args: GenerateArgs = {}, emitter?: EventEmitter) 
     });
     return result.data;
   });
-  emitter?.emit(GenerateEvent.WriteChainsEnd);
+  emitter?.emit("writeChainsEnd");
 
-  emitter?.emit(GenerateEvent.WriteRoot);
+  emitter?.emit("writeRoot");
   await writeRootSources({
     data: chainData,
     destPath: outDir,
     merged: args.merged ?? false,
   });
-  emitter?.emit(GenerateEvent.WriteRootEnd);
+  emitter?.emit("writeRootEnd");
 };

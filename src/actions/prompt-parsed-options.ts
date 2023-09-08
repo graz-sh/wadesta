@@ -1,23 +1,25 @@
 import * as fs from "fs";
 
-import * as constants from "../../constants";
-import type { GenerateArgs } from "../../generate";
-import * as p from "../../vendor/clack";
-import { parseOptions } from "./parse-options";
+import * as constants from "../constants";
+import type { GenerateOptions, ParsedGenerateOptions } from "../types";
+import * as p from "../vendor/clack";
 
 type ClackGenerateOptions = {
-  [K in keyof GenerateArgs]: (NonNullable<GenerateArgs[K]> extends string ? string : GenerateArgs[K]) | symbol;
+  [K in keyof GenerateOptions]: (NonNullable<GenerateOptions[K]> extends string ? string : GenerateOptions[K]) | symbol;
 };
 
-export const promptInputs = async (options: any, isActuallyInteractive?: boolean): Promise<GenerateArgs> => {
-  const parsed = parseOptions(options);
-  if (isActuallyInteractive === false) return parsed;
-  if (!parsed.isInteractive) return parsed;
+export const promptParsedOptions = async (
+  args: ParsedGenerateOptions,
+  overrides: GenerateOptions = {},
+): Promise<GenerateOptions> => {
+  if (!args.isActuallyInteractive) return args;
+  if (overrides.interactive === false || args.interactive === false) return args;
   return p.group<ClackGenerateOptions>(
     {
       registry: async () => {
-        if (parsed.registrySrc) return "local";
-        if (parsed.registry) return parsed.registry;
+        if ("registry" in overrides) return overrides.registry;
+        if (args.registrySrc) return "local";
+        if (args.registry) return args.registry;
         return p.text({
           message: "Enter a chain registry source",
           placeholder: constants.DEFAULT_REGISTRY_SRC,
@@ -25,7 +27,8 @@ export const promptInputs = async (options: any, isActuallyInteractive?: boolean
         });
       },
       registrySrc: async ({ results }) => {
-        if (parsed.registrySrc) return parsed.registrySrc;
+        if ("registrySrc" in overrides) return overrides.registrySrc;
+        if (args.registrySrc) return args.registrySrc;
         if (results.registry !== "local") return;
         return p.text({
           message: "Enter local registry path",
@@ -40,7 +43,8 @@ export const promptInputs = async (options: any, isActuallyInteractive?: boolean
         });
       },
       outDir: async () => {
-        if (parsed.outDir) return parsed.outDir;
+        if ("outDir" in overrides) return overrides.outDir;
+        if (args.outDir) return args.outDir;
         return p.text({
           message: "Enter generated client output directory",
           placeholder: constants.DEFAULT_OUT_DIR,
@@ -48,7 +52,8 @@ export const promptInputs = async (options: any, isActuallyInteractive?: boolean
         });
       },
       merged: async () => {
-        if (parsed.merged) return parsed.merged;
+        if ("merged" in overrides) return overrides.merged;
+        if (args.merged) return args.merged;
         return p.confirm({
           message: "Merge variables? (true: `chainIds`, false: `mainnetChainIds`, `testnetChainIds`, and `chainIds`)",
           active: "merge",

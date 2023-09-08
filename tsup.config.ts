@@ -25,17 +25,23 @@ export default defineConfig(async () => {
   const filesToForceClean = await globby(["dist/*", "stubs/*"], { onlyFiles: true });
   await pMap(filesToForceClean, (file) => fs.unlink(file).catch(() => void 0));
   return [
-    // main entrypoint
+    // main entrypoints
     {
       ...defaultOptions,
-      entry: ["src/index.ts"],
+      entry: [
+        "src/cli.ts",
+        "src/events.ts",
+        "src/index.ts",
+        //
+      ],
     },
-    // built stubs
+    // precompiled stubs
     {
       ...defaultOptions,
       entry: ["src/stubs/*.ts"],
       outDir: "stubs",
     },
+    // wadesta bin script
     {
       ...defaultOptions,
       entry: ["src/bin.ts"],

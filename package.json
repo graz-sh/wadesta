@@ -10,7 +10,11 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist/*",
-    "stubs/*"
+    "stubs/*",
+    "cli.js",
+    "cli.d.ts",
+    "events.js",
+    "events.d.ts"
   ],
   "bin": "dist/bin.js",
   "sideEffects": false,
