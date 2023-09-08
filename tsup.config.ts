@@ -18,6 +18,7 @@ const defaultOptions: Options = {
   shims: true,
   splitting: true,
   treeshake: true,
+  tsconfig: "./tsconfig.build.json",
 };
 
 export default defineConfig(async () => {
