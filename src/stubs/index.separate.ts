@@ -35,19 +35,19 @@ export interface ChainData {
 
 const $makeGetters = (resolvedProp: ChainIdOrName): ChainData => ({
   get assetlist() {
-    return require(`./${resolvedProp}/assetlist`).default;
+    return require(`./${resolvedProp}/assetlist`);
   },
   get chain() {
-    return require(`./${resolvedProp}/chain`).default;
+    return require(`./${resolvedProp}/chain`);
   },
   get chainId() {
-    return require(`./${resolvedProp}`).default.chainId;
+    return require(`./${resolvedProp}`).chainId;
   },
   get chainInfo() {
-    return require(`./${resolvedProp}`).default;
+    return require(`./${resolvedProp}`);
   },
   get chainName() {
-    return require(`./${resolvedProp}/chain`).default.chain_name;
+    return require(`./${resolvedProp}/chain`).chain_name;
   },
 });
 
@@ -87,7 +87,7 @@ export const getChainInfo = <T extends ChainIdOrName>(pathOrPaths: T | readonly 
   for (const prop of props) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const resolvedProp = chainIdToName[prop] || raise(`unknown chain id or name '${prop}'`);
-    data[prop] = require(`./${resolvedProp}`).default;
+    data[prop] = require(`./${resolvedProp}`);
   }
   return data as Record<T, ChainInfo>;
 };
@@ -98,7 +98,7 @@ export const getChainInfoArray = <T extends ChainIdOrName, const U extends T | r
   for (const prop of props) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const resolvedProp = chainIdToName[prop] || raise(`unknown chain id or name '${prop}'`);
-    data.push(require(`./${resolvedProp}`).default);
+    data.push(require(`./${resolvedProp}`));
   }
   return data as U extends T ? [ChainInfo] : U extends readonly T[] ? GetChainInfoTuple<U> : never;
 };
@@ -117,12 +117,12 @@ export const mainnetChainData = /* @__PURE__ */ $chainDataProxy as Record<Mainne
 export const testnetChainData = /* @__PURE__ */ $chainDataProxy as Record<TestnetChainIdOrName, ChainData>;
 export const chainData = /* @__PURE__ */ $chainDataProxy as Record<ChainIdOrName, ChainData>;
 
-const $chainsProxy = /* @__PURE__ */ $makeProxy((resolvedProp) => require(`./${resolvedProp}/chain`).default);
+const $chainsProxy = /* @__PURE__ */ $makeProxy((resolvedProp) => require(`./${resolvedProp}/chain`));
 export const mainnetChains = /* @__PURE__ */ $chainsProxy as Record<MainnetChainIdOrName, Chain>;
 export const testnetChains = /* @__PURE__ */ $chainsProxy as Record<TestnetChainIdOrName, Chain>;
 export const chains = /* @__PURE__ */ $chainsProxy as Record<ChainIdOrName, Chain>;
 
-const $chainInfosProxy = /* @__PURE__ */ $makeProxy((resolvedProp) => require(`./${resolvedProp}`).default);
+const $chainInfosProxy = /* @__PURE__ */ $makeProxy((resolvedProp) => require(`./${resolvedProp}`));
 export const mainnetChainInfos = /* @__PURE__ */ $chainInfosProxy as Record<MainnetChainIdOrName, ChainInfo>;
 export const testnetChainInfos = /* @__PURE__ */ $chainInfosProxy as Record<TestnetChainIdOrName, ChainInfo>;
 export const chainInfos = /* @__PURE__ */ $chainInfosProxy as Record<ChainIdOrName, ChainInfo>;
