@@ -23,8 +23,9 @@
     "cli": "node dist/bin.js",
     "dev": "tsup --watch",
     "lint": "eslint --fix \"src/**/*.{ts,tsx}\"",
-    "prepublishOnly": "pnpm build && node scripts/clean-readme.js",
-    "postpublish": "git reset HEAD --hard"
+    "postpublish": "git reset HEAD --hard",
+    "prepack": "node scripts/prepack.js",
+    "prepublishOnly": "pnpm build && node scripts/clean-readme.js"
   },
   "peerDependencies": {
     "long": "*"
