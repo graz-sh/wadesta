@@ -1,7 +1,7 @@
 {
   "name": "wadesta",
   "description": "Offline-first Cosmos chain registry JavaScript/TypeScript client generator 🪭",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Griko Nibras <griko@graz.sh>",
   "repository": "https://github.com/graz-sh/wadesta.git",
   "homepage": "https://github.com/graz-sh/wadesta",
