@@ -8,6 +8,7 @@ import type { FileExt, ModuleType } from "../types";
 import { makeAssetList } from "./make-asset-list";
 import { makeChain } from "./make-chain";
 import { makeChainInfo } from "./make-chain-info";
+import { makeDtsSource } from "./make-dts-source";
 
 export interface WriteChainSourcesArgs {
   registryPath: string;
@@ -41,16 +42,32 @@ export const writeChainSources = async (args: WriteChainSourcesArgs) => {
       source: `${assetlist.source}\n`,
     },
     {
+      target: path.resolve(args.destPath, actualChainPath, `assetlist.d.ts`),
+      source: makeDtsSource({ import: "@graz-sh/types", type: "AssetList" }),
+    },
+    {
       target: path.resolve(args.destPath, actualChainPath, `chain.${args.ext}`),
       source: `${chain.source}\n`,
+    },
+    {
+      target: path.resolve(args.destPath, actualChainPath, `chain.d.ts`),
+      source: makeDtsSource({ import: "@graz-sh/types", type: "Chain" }),
     },
     {
       target: path.resolve(args.destPath, actualChainPath, `chain-info.${args.ext}`),
       source: `${chainInfo.source}\n`,
     },
     {
+      target: path.resolve(args.destPath, actualChainPath, `chain-info.d.ts`),
+      source: makeDtsSource({ import: "@graz-sh/types", type: "ChainInfo" }),
+    },
+    {
       target: path.resolve(args.destPath, actualChainPath, `index.${args.ext}`),
       source: `${chainInfo.source}\n`,
+    },
+    {
+      target: path.resolve(args.destPath, actualChainPath, `index.d.ts`),
+      source: makeDtsSource({ import: "@graz-sh/types", type: "ChainInfo" }),
     },
   ];
 
